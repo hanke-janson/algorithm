@@ -1,0 +1,25 @@
+package topic7;
+
+public class GetMax {
+    /**
+     * master公式:T(N) = a*T(N/b) + O(N^d)
+     * a=2,b=2,d=0
+     * T(N)=2*T(N/2)+O(1)
+     * log(2,2) > 0 => O(N^log(2,2))
+     */
+    public static int getMax(int[] arr) {
+        return process(arr, 0, arr.length - 1);
+    }
+
+    //arr[L...R]范围上求最大值
+    public static int process(int[] arr, int L, int R) {
+        if (L == R) { //arr[L...R]范围上只有一个数，直接返回，base case
+            return arr[L];
+        }
+        int mid = L + ((R - L) >> 1);//中点L+(R-L)/2 相当于右移一位L+((R-L)>>1)
+        int leftMax = process(arr, L, mid);
+        int rightMax = process(arr, mid + 1, R);
+        return Math.max(leftMax, rightMax);
+    }
+
+}
