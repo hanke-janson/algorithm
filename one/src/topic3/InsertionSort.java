@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 /**
  * 插入排序
+ * O(N^2)
  */
 public class InsertionSort {
 

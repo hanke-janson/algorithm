@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 /**
  * 选择排序
+ * O(N^2)
  */
 public class SelectionSort {
 
