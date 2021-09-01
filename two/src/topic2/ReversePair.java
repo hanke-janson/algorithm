@@ -5,7 +5,7 @@ package topic2;
  */
 public class ReversePair {
 
-    private static int reversePair(int[] arr) {
+    public static int reversePair(int[] arr) {
         //排除捣乱数组
         if (arr == null || arr.length < 2) {
             return 0;
@@ -13,24 +13,26 @@ public class ReversePair {
         return mergeSort(arr, 0, arr.length - 1);
     }
 
-    private static int mergeSort(int[] arr, int l, int r) {
+    public static int mergeSort(int[] arr, int l, int r) {
         if (l == r) {
             return 0;
         }
         int mid = l + ((r - l) >> 1);//求中点
-        return mergeSort(arr, l, mid) + mergeSort(arr, mid + 1, r) + merge(arr, l, mid, r);
+        return mergeSort(arr, l, mid)//左侧排序求逆序对个数
+                + mergeSort(arr, mid + 1, r)//右侧排序求逆序对个数
+                + merge(arr, l, mid, r);//合并排序求逆序对个数
     }
 
-    private static int merge(int[] arr, int l, int m, int r) {
+    public static int merge(int[] arr, int l, int m, int r) {
         int[] help = new int[r - l + 1];//初始化一个与原数组等大的辅助数组help
         int i = 0;//help数组下标
         int p1 = l;//arr数组右半部分下标
         int p2 = m + 1;//arr数组左半部分下标
         int res = 0;//逆序对个数
-        while (p1 < m && p2 < r) {
+        while (p1 <= m && p2 <= r) {
             //求逆序对的个数
             res += arr[p1] > arr[p2] ? (m - p1 + 1) : 0;
-            help[i++] = arr[p1] >= arr[p2] ? arr[p1++] : arr[p2++];//相等先拷贝左侧
+            help[i++] = arr[p1] > arr[p2] ? arr[p1++] : arr[p2++];
         }
         while (p1 <= m) {
             help[i++] = arr[p1++];
@@ -52,7 +54,7 @@ public class ReversePair {
         int res = 0;
         for (int i = 1; i < arr.length; i++) {
             for (int j = 0; j < i; j++) {
-                res += arr[j] < arr[i] ? arr[j] : 0;
+                res += arr[j] > arr[i] ? 1 : 0;
             }
         }
         return res;
