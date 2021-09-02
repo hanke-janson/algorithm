@@ -1,5 +1,3 @@
-package topic1;
-
 /**
  * 举个例子，当时间复杂度相同时只能跑一下然后进行比较
  */
@@ -28,5 +26,13 @@ public class test {
     public static void main(String[] args) {
         process1();
         process2();
+
+        int a = 10;
+        int b = 1846;
+        a = a ^ b;
+        b = a ^ b;
+        a = a ^ b;
+        System.out.println(a);
+        System.out.println(b);
     }
 }

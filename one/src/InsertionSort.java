@@ -1,51 +1,26 @@
-package topic1;
-
 import java.util.Arrays;
 
 /**
- * 归并排序
- * T(N)=2*T(N/2)+O(N)
- * a=2,b=2,d=1
- * log(2,2) = 1 --> O(N * logN)
- * 没有浪费掉比较行为，比较信息变成了一个整体部分，所以比O(N^2)更好
+ * 插入排序
+ * O(N^2)
  */
-public class MergeSort {
+public class InsertionSort {
 
-    public static void mergeSort(int[] arr) {
+    public static void insertionSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
-        mergeSort(arr, 0, arr.length - 1);
+        for (int i = 1; i < arr.length; i++) {//0~i做到有序
+            for (int j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j--) {
+                swap(arr, j, j + 1);
+            }
+        }
     }
 
-    public static void mergeSort(int[] arr, int l, int r) {
-        if (l == r) {
-            return;
-        }
-        int mid = l + ((r - l) >> 1);// 求中点
-        mergeSort(arr, l, mid);//前半段递归
-        mergeSort(arr, mid + 1, r);//后半段递归
-        merge(arr, l, mid, r);//合并两段
-    }
-
-    public static void merge(int[] arr, int l, int m, int r) {
-        int[] help = new int[r - l + 1];//初始化一个辅助数组，大小为l到r上的个数
-        int i = 0;//help数组下标
-        int p1 = l;//arr数组前半段下标
-        int p2 = m + 1;//arr数组后半段下标
-        while (p1 <= m && p2 <= r) {
-            help[i++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];//比较两段数，较小的那个数加到help数组中
-        }
-        //以下两个while只会中一个
-        while (p1 <= m) {//若p1没越界，拷贝p1段剩余的数到help数组中
-            help[i++] = arr[p1++];
-        }
-        while (p2 <= r) {//若p2没越界，拷贝p2段剩余的数到help数组中
-            help[i++] = arr[p2++];
-        }
-        for (i = 0; i < help.length; i++) {//把help中的数拷贝到原数组arr中
-            arr[l + i] = help[i];
-        }
+    public static void swap(int[] arr, int i, int j) {
+        arr[i] = arr[i] ^ arr[j];
+        arr[j] = arr[i] ^ arr[j];
+        arr[i] = arr[i] ^ arr[j];
     }
 
     // for test
@@ -55,9 +30,14 @@ public class MergeSort {
 
     // for test
     public static int[] generateRandomArray(int maxSize, int maxValue) {
-        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
+        /**
+         * Math.random() --> [0,1)所有小数，等概率返回一个
+         * Math.random()*N --> [0,N)所有小数，等概率返回一个
+         * (int)(Math.random()*N) --> [0,N-1]所有整数等概率返回一个
+         */
+        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];//长度随机
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
+            arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());//值随机
         }
         return arr;
     }
@@ -113,12 +93,10 @@ public class MergeSort {
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
-            mergeSort(arr1);
+            insertionSort(arr1);
             comparator(arr2);
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
-                printArray(arr1);
-                printArray(arr2);
                 break;
             }
         }
@@ -126,9 +104,8 @@ public class MergeSort {
 
         int[] arr = generateRandomArray(maxSize, maxValue);
         printArray(arr);
-        mergeSort(arr);
+        insertionSort(arr);
         printArray(arr);
-
     }
 
 }

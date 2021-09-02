@@ -1,5 +1,3 @@
-package topic7;
-
 public class GetMax {
     /**
      * master公式:T(N) = a*T(N/b) + O(N^d)

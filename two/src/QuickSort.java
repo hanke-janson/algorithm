@@ -1,28 +1,53 @@
-package topic3;
-
 import java.util.Arrays;
 
 /**
- * 插入排序
- * O(N^2)
+ * 快速排序
+ * O(NlogN)
  */
-public class InsertionSort {
+public class QuickSort {
 
-    public static void insertionSort(int[] arr) {
+    public static void quickSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
-        for (int i = 1; i < arr.length; i++) {//0~i做到有序
-            for (int j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j--) {
-                swap(arr, j, j + 1);
-            }
+        quickSort(arr, 0, arr.length - 1);
+    }
+
+    //arr[l..r]排好序
+    public static void quickSort(int[] arr, int l, int r) {
+        if (l < r) {
+            //等概率随机选一个位置,把它和最右位置的数做交换
+            swap(arr, l + (int) (Math.random() * (r - l + 1)), r);
+            //拿已经交换过最右边的数字做划分（此数组大小为2，是<区与>区的左右边界）
+            int[] p = partition(arr, l, r);
+            quickSort(arr, l, p[0] - 1);//<区的右边界
+            quickSort(arr, p[1] + 1, r);//>区的左边界
         }
     }
 
+    //这是一个处理arr[l..r]的方法
+    //默认以arr[r]做划分，arr[r] -> p  <p  =p  >p
+    //返回等于区域（左边界，有边界），所以返回一个长度为2的数组res,res[0],res[1]
+    public static int[] partition(int[] arr, int l, int r) {
+        int less = l - 1;//<区右边界
+        int more = r;//>区左边界
+        while (l < more) {//l表示当前数位置，arr[l] -> 划分值
+            if (arr[l] < arr[r]) {//当前数<划分值
+                swap(arr, ++less, l++);
+            } else if (arr[l] > arr[r]) {//当前数>划分值
+                swap(arr, --more, l);
+            } else {
+                l++;
+            }
+        }
+        swap(arr, more, r);
+        return new int[]{less + 1, more};
+    }
+
     public static void swap(int[] arr, int i, int j) {
-        arr[i] = arr[i] ^ arr[j];
-        arr[j] = arr[i] ^ arr[j];
-        arr[i] = arr[i] ^ arr[j];
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
 
     // for test
@@ -32,14 +57,9 @@ public class InsertionSort {
 
     // for test
     public static int[] generateRandomArray(int maxSize, int maxValue) {
-        /**
-         * Math.random() --> [0,1)所有小数，等概率返回一个
-         * Math.random()*N --> [0,N)所有小数，等概率返回一个
-         * (int)(Math.random()*N) --> [0,N-1]所有整数等概率返回一个
-         */
-        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];//长度随机
+        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());//值随机
+            arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
         }
         return arr;
     }
@@ -95,10 +115,12 @@ public class InsertionSort {
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
-            insertionSort(arr1);
+            quickSort(arr1);
             comparator(arr2);
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
+                printArray(arr1);
+                printArray(arr2);
                 break;
             }
         }
@@ -106,8 +128,9 @@ public class InsertionSort {
 
         int[] arr = generateRandomArray(maxSize, maxValue);
         printArray(arr);
-        insertionSort(arr);
+        quickSort(arr);
         printArray(arr);
+
     }
 
 }
