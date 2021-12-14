@@ -3,6 +3,7 @@ import java.util.Arrays;
 /**
  * 快速排序
  * O(NlogN)
+ * 额外空间复杂度为O(N)
  */
 public class QuickSort {
 
