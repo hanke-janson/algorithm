@@ -1,54 +1,32 @@
 import java.util.Arrays;
 
 /**
- * 快速排序
- * O(NlogN)
- * 额外空间复杂度为O(N)
+ * 冒泡排序
+ * O(N^2)
  */
-public class QuickSort {
+public class C1_BubbleSort {
 
-    public static void quickSort(int[] arr) {
+    public static void bubbleSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
-        quickSort(arr, 0, arr.length - 1);
-    }
-
-    //arr[l..r]排好序
-    public static void quickSort(int[] arr, int l, int r) {
-        if (l < r) {
-            //等概率随机选一个位置,把它和最右位置的数做交换
-            swap(arr, l + (int) (Math.random() * (r - l + 1)), r);
-            //拿已经交换过最右边的数字做划分（此数组大小为2，是<区与>区的左右边界）
-            int[] p = partition(arr, l, r);
-            quickSort(arr, l, p[0] - 1);//<区的右边界
-            quickSort(arr, p[1] + 1, r);//>区的左边界
-        }
-    }
-
-    //这是一个处理arr[l..r]的方法
-    //默认以arr[r]做划分，arr[r] -> p  <p  =p  >p
-    //返回等于区域（左边界，有边界），所以返回一个长度为2的数组res,res[0],res[1]
-    public static int[] partition(int[] arr, int l, int r) {
-        int less = l - 1;//<区右边界
-        int more = r;//>区左边界
-        while (l < more) {//l表示当前数位置，arr[l] -> 划分值
-            if (arr[l] < arr[r]) {//当前数<划分值
-                swap(arr, ++less, l++);
-            } else if (arr[l] > arr[r]) {//当前数>划分值
-                swap(arr, --more, l);
-            } else {
-                l++;
+        for (int e = arr.length - 1; e > 0; e--) {
+            for (int i = 0; i < e; i++) {
+                if (arr[i] > arr[i + 1]) {
+                    swap(arr, i, i + 1);
+                }
             }
         }
-        swap(arr, more, r);
-        return new int[]{less + 1, more};
     }
 
+    /**
+     * 交换i与j位置上的值
+     * 注：i和j在内存里是两块独立的区域,i位置不能等于j位置
+     */
     public static void swap(int[] arr, int i, int j) {
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
+        arr[i] = arr[i] ^ arr[j];
+        arr[j] = arr[i] ^ arr[j];
+        arr[i] = arr[i] ^ arr[j];
     }
 
     // for test
@@ -116,12 +94,10 @@ public class QuickSort {
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
-            quickSort(arr1);
+            bubbleSort(arr1);
             comparator(arr2);
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
-                printArray(arr1);
-                printArray(arr2);
                 break;
             }
         }
@@ -129,9 +105,8 @@ public class QuickSort {
 
         int[] arr = generateRandomArray(maxSize, maxValue);
         printArray(arr);
-        quickSort(arr);
+        bubbleSort(arr);
         printArray(arr);
-
     }
 
 }

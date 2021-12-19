@@ -8,7 +8,7 @@ import java.util.Arrays;
  * heapInsert()代价是O(logN)，往上走只与父节点比较即一个堆的高度
  * heapify()代价是O(logN)，往下走堆的一侧即一个堆的高度
  */
-public class HeapSort {
+public class C2_HeapSort {
 
     public static void heapSort(int[] arr) {
         if (arr == null || arr.length < 2) {

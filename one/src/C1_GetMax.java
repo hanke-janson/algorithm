@@ -1,4 +1,4 @@
-public class GetMax {
+public class C1_GetMax {
     /**
      * master公式:T(N) = a*T(N/b) + O(N^d)
      * a=2,b=2,d=0

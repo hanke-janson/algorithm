@@ -1,7 +1,7 @@
 /**
  * 举个例子，当时间复杂度相同时只能跑一下然后进行比较
  */
-public class test {
+public class C1_test {
 
     public static void process1() { //O(N)
         int N = 1000;

@@ -1,63 +1,33 @@
+import java.util.Arrays;
+
 /**
- * 小和问题
+ * 选择排序
+ * O(N^2)
  */
-public class SmallSum {
+public class C1_SelectionSort {
 
-    public static int smallSum(int[] arr) {
+    public static void selectionSort(int[] arr) {
         if (arr == null || arr.length < 2) {
-            return 0;
+            return;
         }
-        return mergeSort(arr, 0, arr.length - 1);
+        for (int i = 0; i < arr.length - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                minIndex = arr[j] < arr[minIndex] ? j : minIndex;
+            }
+            swap(arr, i, minIndex);
+        }
     }
 
-    //arr[l...r]既要排好序，也要求小和
-    public static int mergeSort(int[] arr, int l, int r) {
-        if (l == r) {
-            return 0;
-        }
-        int mid = l + ((r - l) >> 1);//求中点
-        return mergeSort(arr, l, mid)//左侧排序求小和的数量
-                + mergeSort(arr, mid + 1, r)//右侧排序求小和的数量
-                + merge(arr, l, mid, r);//左右排好合并时小和的数量
-    }
-
-    public static int merge(int[] arr, int l, int m, int r) {
-        int[] help = new int[r - l + 1];//初始化一个辅助数组，大小为l到r上的个数
-        int i = 0;//help数组下标
-        int p1 = l;//arr数组前半段下标
-        int p2 = m + 1;//arr数组后半段下标
-        int res = 0;
-        while (p1 <= m && p2 <= r) {
-            //merge过程中算小和
-            //前半段小于后半段时产生小和增加的行为
-            //r - p2 + 1 :当前后半段有多少数比p1大
-            res += arr[p1] < arr[p2] ? (r - p2 + 1) * arr[p1] : 0;
-            help[i++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];//相等时先拷贝右组
-        }
-        while (p1 <= m) {
-            help[i++] = arr[p1++];
-        }
-        while (p2 <= r) {
-            help[i++] = arr[p2++];
-        }
-        for (i = 0; i < help.length; i++) {
-            arr[l + i] = help[i];
-        }
-        return res;
+    public static void swap(int[] arr, int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
 
     // for test
-    public static int comparator(int[] arr) {
-        if (arr == null || arr.length < 2) {
-            return 0;
-        }
-        int res = 0;
-        for (int i = 1; i < arr.length; i++) {
-            for (int j = 0; j < i; j++) {
-                res += arr[j] < arr[i] ? arr[j] : 0;
-            }
-        }
-        return res;
+    public static void comparator(int[] arr) {
+        Arrays.sort(arr);
     }
 
     // for test
@@ -120,7 +90,9 @@ public class SmallSum {
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
-            if (smallSum(arr1) != comparator(arr2)) {
+            selectionSort(arr1);
+            comparator(arr2);
+            if (!isEqual(arr1, arr2)) {
                 succeed = false;
                 printArray(arr1);
                 printArray(arr2);
@@ -128,6 +100,11 @@ public class SmallSum {
             }
         }
         System.out.println(succeed ? "Nice!" : "Fucking fucked!");
+
+        int[] arr = generateRandomArray(maxSize, maxValue);
+        printArray(arr);
+        selectionSort(arr);
+        printArray(arr);
     }
 
 }

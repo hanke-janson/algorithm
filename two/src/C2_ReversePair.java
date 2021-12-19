@@ -1,33 +1,61 @@
-import java.util.Arrays;
-
 /**
- * 选择排序
- * O(N^2)
+ * 逆序对问题(有误待改！！！！)
  */
-public class SelectionSort {
+public class C2_ReversePair {
 
-    public static void selectionSort(int[] arr) {
+    public static int reversePair(int[] arr) {
+        //排除捣乱数组
         if (arr == null || arr.length < 2) {
-            return;
+            return 0;
         }
-        for (int i = 0; i < arr.length - 1; i++) {
-            int minIndex = i;
-            for (int j = i + 1; j < arr.length; j++) {
-                minIndex = arr[j] < arr[minIndex] ? j : minIndex;
-            }
-            swap(arr, i, minIndex);
-        }
+        return mergeSort(arr, 0, arr.length - 1);
     }
 
-    public static void swap(int[] arr, int i, int j) {
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
+    public static int mergeSort(int[] arr, int l, int r) {
+        if (l == r) {
+            return 0;
+        }
+        int mid = l + ((r - l) >> 1);//求中点
+        return mergeSort(arr, l, mid)//左侧排序求逆序对个数
+                + mergeSort(arr, mid + 1, r)//右侧排序求逆序对个数
+                + merge(arr, l, mid, r);//合并排序求逆序对个数
+    }
+
+    public static int merge(int[] arr, int l, int m, int r) {
+        int[] help = new int[r - l + 1];//初始化一个与原数组等大的辅助数组help
+        int i = 0;//help数组下标
+        int p1 = l;//arr数组右半部分下标
+        int p2 = m + 1;//arr数组左半部分下标
+        int res = 0;//逆序对个数
+        while (p1 <= m && p2 <= r) {
+            //求逆序对的个数
+            res += arr[p1] > arr[p2] ? (m - p1 + 1) : 0;
+            help[i++] = arr[p1] > arr[p2] ? arr[p1++] : arr[p2++];
+        }
+        while (p1 <= m) {
+            help[i++] = arr[p1++];
+        }
+        while (p2 <= r) {
+            help[i++] = arr[p2++];
+        }
+        for (i = 0; i < help.length; i++) {
+            arr[l + i] = help[i];
+        }
+        return res;
     }
 
     // for test
-    public static void comparator(int[] arr) {
-        Arrays.sort(arr);
+    public static int comparator(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return 0;
+        }
+        int res = 0;
+        for (int i = 1; i < arr.length; i++) {
+            for (int j = 0; j < i; j++) {
+                res += arr[j] > arr[i] ? 1 : 0;
+            }
+        }
+        return res;
     }
 
     // for test
@@ -90,9 +118,7 @@ public class SelectionSort {
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
-            selectionSort(arr1);
-            comparator(arr2);
-            if (!isEqual(arr1, arr2)) {
+            if (reversePair(arr1) != comparator(arr2)) {
                 succeed = false;
                 printArray(arr1);
                 printArray(arr2);
@@ -100,11 +126,6 @@ public class SelectionSort {
             }
         }
         System.out.println(succeed ? "Nice!" : "Fucking fucked!");
-
-        int[] arr = generateRandomArray(maxSize, maxValue);
-        printArray(arr);
-        selectionSort(arr);
-        printArray(arr);
     }
 
 }

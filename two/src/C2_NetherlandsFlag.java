@@ -1,4 +1,4 @@
-public class NetherlandsFlag {
+public class C2_NetherlandsFlag {
 
 	public static int[] partition(int[] arr, int l, int r, int p) {
 		int less = l - 1;

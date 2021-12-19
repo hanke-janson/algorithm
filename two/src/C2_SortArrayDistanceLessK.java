@@ -3,7 +3,7 @@ import java.util.PriorityQueue;
 /**
  * O(N+logK)，若K特别小甚至可以认为这个是O(N)的算法
  */
-public class SortArrayDistanceLessK {
+public class C2_SortArrayDistanceLessK {
 
     public void sortedArrDistanceLessK(int[] arr, int k) {
         //默认小根堆

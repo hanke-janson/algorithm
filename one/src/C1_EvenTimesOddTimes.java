@@ -3,7 +3,7 @@
  * - 一个数组中有两种数出现了奇数次，其他数都出现了偶数次，怎么找到这两个数
  * - 要求：时间复杂度为O(N) 额外空间复杂度为O(1)
  */
-public class EvenTimesOddTimes {
+public class C1_EvenTimesOddTimes {
 
     public static void printOddTimesNum1(int[] arr) {
         int eor = 0;
