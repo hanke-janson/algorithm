@@ -2,9 +2,6 @@ import java.util.PriorityQueue;
 
 /**
  * O(N+logK)，若K特别小甚至可以认为这个是O(N)的算法
- * 扩容问题：
- * 当底层数组耗尽时，成倍扩容，
- * 单次扩容代价为O(N)，扩容次数是O(logN)，平均到每次扩容的代价为O(N*logN) / N = O(logN)
  */
 public class SortArrayDistanceLessK {
 
