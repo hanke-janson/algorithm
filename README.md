@@ -1,4 +1,4 @@
-# algorithm
+# 算法学习之路
 
 ## [1 认识复杂度和简单排序算法](one/README.md)
 
